@@ -62,7 +62,8 @@ def glow_sprite(radius, color, hardness=2.2):
     s = radius * 2
     yy, xx = np.mgrid[0:s, 0:s].astype(np.float32)
     r = np.sqrt((xx - radius) ** 2 + (yy - radius) ** 2) / radius
-    fall = np.exp(-hardness * r ** 2)
+    fall = np.exp(-hardness * r ** 2) - np.exp(-hardness)  # reach zero at the sprite edge
+    fall = np.clip(fall, 0, None) / (1 - np.exp(-hardness))
     return fall[..., None] * color[None, None, :]
 
 
@@ -144,7 +145,7 @@ def main(out_path):
 
     # hand-drawn wavy underline for the title (write-on reveal)
     ux = np.arange(W * 0.30, W * 0.70, 3, dtype=np.float32)
-    uy = H * 0.545 + 4 * np.sin(ux * 0.018) + np.cumsum(rng.standard_normal(len(ux)) * 0.35)
+    uy = H * 0.585 + 4 * np.sin(ux * 0.018) + np.cumsum(rng.standard_normal(len(ux)) * 0.35)
 
     writer = imageio_ffmpeg.write_frames(
         out_path, (W, H), fps=FPS, codec="libx264", macro_block_size=8,
