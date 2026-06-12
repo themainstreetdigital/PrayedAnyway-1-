@@ -23,29 +23,27 @@ BEATS = [
          shot="phone_dark", pre=0.3, post=1.4),
     dict(id="c4", section="open",
          vo="And somewhere under the tiredness there's a quieter question you don't say out loud, because saying it out loud makes it real: what if the silence means He left?",
-         shot="rain_window", pre=0.4, post=1.8,
-         overlay=("caption", ["what if the silence", "means He left?"], "tail")),
+         shot="rain_window", pre=0.4, post=1.8,),
 
     # ---- TITLE STRIKE-IN — generated -----------------------------------------
-    dict(id="title", section="title", vo=None, shot="mg:title", dur=11.0),
+    dict(id="title", section="title", vo=None, shot="fog_forest", shot_offset=10, dur=11.0),
 
     # ---- ACT 1 — SIT IN IT ----------------------------------------------------
     dict(id="a1", section="act1",
          vo="Here's what nobody tells you about silence: it's not neutral. Silence gets interpreted. A friend doesn't text back, and within three hours you've written an entire story about what you did wrong. Now run that same software on the Creator of the universe, and watch what it builds: He's disappointed in me. I asked wrong. I'm not one of the ones He talks to.",
-         shot="mg:texts", pre=0.8, post=0.8),
+         shot="city_rain_night", pre=0.8, post=0.8),
     dict(id="a2", section="act1",
          vo='And the church doesn\'t always help. Everyone around you seems to have a direct line. "God told me." "I just felt led." Meanwhile you\'re sitting in the same room, wondering if your receiver is broken.',
          shot="church_silhouette", pre=0.3, post=0.8),
     dict(id="a3", section="act1",
          vo="So you do the math most people do in the dark: silence equals absence. No answer means no one's there.",
-         shot="man_alone_window", pre=0.3, post=1.0,
-         overlay=("caption", ["silence = absence"], "tail")),
+         shot="man_alone_window", pre=0.3, post=1.0,),
     dict(id="a4", section="act1",
          vo="I want to show you why that math is wrong. And I want to show you using the part of the Bible nobody preaches on — because it isn't a verse.",
          shot="fog_forest", pre=0.4, post=0.6),
     dict(id="a5", section="act1",
          vo="It's a gap.",
-         shot="mg:gap", pre=0.4, post=1.6),
+         shot="night_sky", shot_offset=10, pre=0.4, post=1.6),
 
     # ---- PIVOT ----------------------------------------------------------------
     dict(id="p1", section="pivot",
@@ -53,8 +51,7 @@ BEATS = [
          shot="page_turn", pre=0.5, post=1.0),
     dict(id="p2", section="pivot",
          vo="That page-turn took four hundred years.",
-         shot="page_turn", shot_offset=10, pre=0.3, post=2.2,
-         overlay=("bignum", ["400 YEARS"], "tail")),
+         shot="page_turn", shot_offset=10, pre=0.3, post=2.2,),
 
     # ---- ACT 2 — THE STORY, TOLD DARKLY ---------------------------------------
     dict(id="b1", section="act2",
@@ -62,13 +59,13 @@ BEATS = [
          shot="temple_columns", pre=0.6, post=0.8),
     dict(id="b2", section="act2",
          vo="And then — nothing.",
-         shot="night_sky", pre=0.4, post=1.6),
+         shot="night_sky", shot_offset=10, pre=0.4, post=1.6),
     dict(id="b3", section="act2",
          vo="No prophet. No vision. No voice. Not for a year. Not for a decade. For four. hundred. years. Generations are born, grow old, and die inside that silence. They bury parents and children inside it. Empires roll over them — Persia, then Greece, then Rome — and heaven says nothing.",
          shot="ruins_clouds", pre=0.3, post=1.0),
     dict(id="b4", section="act2",
          vo="Think about what that does to a people. Grandmothers teaching grandchildren the old promise — Elijah is coming — while privately wondering if they're passing down a memory, or a fantasy. Whole lifetimes of prayers that end in ceiling.",
-         shot="mg:generations", pre=0.4, post=0.8),
+         shot="candle_burn", pre=0.4, post=0.8),
     dict(id="b5", section="act2",
          vo="You think your silence is long.",
          shot="empty_chair", pre=0.4, post=1.8),
@@ -77,15 +74,14 @@ BEATS = [
          shot="oil_lamp", pre=0.5, post=0.8),
     dict(id="b7", section="act2",
          vo="Four hundred years of nothing... and they prayed anyway.",
-         shot="lamp_dark_room", pre=0.4, post=1.6,
-         overlay=("caption", ["prayed anyway."], "tail")),
+         shot="lamp_dark_room", pre=0.4, post=1.6,),
     dict(id="b8", section="act2",
          vo="Then one ordinary afternoon, an old priest named Zechariah draws temple duty. He goes in to burn the incense — a once-in-a-lifetime assignment — and standing next to the altar... is an angel.",
          shot="incense_smoke", pre=0.5, post=1.0),
     dict(id="b9", section="act2",
          vo='The first words out of heaven in four centuries — the very first words — are these: "Do not be afraid, Zechariah... for your prayer has been heard."',
          shot="candle_macro", pre=0.4, post=0.0),
-    dict(id="hold", section="act2", vo=None, shot="mg:hold", dur=4.5),
+    dict(id="hold", section="act2", vo=None, shot="candle_macro", shot_offset=40, dur=4.5),
 
     # ---- THE STRIKE ------------------------------------------------------------
     dict(id="s1", section="strike",
@@ -96,8 +92,7 @@ BEATS = [
          shot="candle_macro", shot_offset=20, pre=0.3, post=1.0),
     dict(id="s3", section="strike",
          vo="Silence isn't absence. Sometimes it's the held breath before the answer.",
-         shot="page_turn", pre=0.5, post=2.0,
-         overlay=("caption", ["silence isn't absence."], "tail")),
+         shot="page_turn", pre=0.5, post=2.0,),
 
     # ---- ACT 3 — WHAT THIS MEANS AT 1AM ----------------------------------------
     dict(id="d1", section="act3",
@@ -108,14 +103,13 @@ BEATS = [
          shot="temple_columns", shot_offset=20, pre=0.4, post=1.0),
     dict(id="d3", section="act3",
          vo='Second: notice that the Bible never shames the people who got tired in the silence. Psalm 13 is in the Bible — "How long, O Lord? Will you forget me forever?" — that\'s scripture. Which means the angry, exhausted, doubting prayer counts as prayer. The door stays open for people who knock with less and less hope. David wrote the complaint into the hymnbook.',
-         shot="mg:psalm", pre=0.5, post=1.0),
+         shot="man_alone_window", shot_offset=12, shot2="door_ajar", pre=0.5, post=1.0),
     dict(id="d4", section="act3",
          vo="Third — and this is the one I can't get over — the silence broke in the middle of somebody's ordinary routine. Zechariah wasn't doing anything spectacular. He was doing his shift. Simeon was doing another regular day at the temple. The answer came to people who kept showing up to the ordinary thing.",
          shot="kettle_morning", shot2="notebook_writing", pre=0.4, post=0.8),
     dict(id="d5", section="act3",
          vo="Maybe faithfulness in the silence isn't feeling something. Maybe it's just... showing up to your shift.",
-         shot="dawn_blinds", pre=0.4, post=1.6,
-         overlay=("caption", ["showing up to your shift."], "tail")),
+         shot="dawn_blinds", pre=0.4, post=1.6,),
 
     # ---- OPEN HAND ---------------------------------------------------------------
     dict(id="e1", section="end",
@@ -126,15 +120,14 @@ BEATS = [
          shot="candle_burn", pre=0.3, post=1.0),
     dict(id="e3", section="end",
          vo="And if you want — tell me in the comments: what's the prayer you've stopped saying out loud, but haven't actually stopped praying? I read them. So do a few thousand people who feel exactly like you do, at 1:43 in the morning.",
-         shot="hands_phone_warm", shot_offset=6, pre=0.4, post=0.8,
-         overlay=("caption", ["the prayer you've stopped", "saying out loud —"], "mid")),
+         shot="hands_phone_warm", shot_offset=6, pre=0.4, post=0.8,),
     dict(id="e4", section="end",
          vo="The light shines in the darkness. The darkness has not overcome it.",
          shot="door_ajar", pre=0.6, post=1.0),
     dict(id="e5", section="end",
          vo="Goodnight.",
          shot="door_ajar", shot_offset=8, pre=0.2, post=1.5),
-    dict(id="endcard", section="end", vo=None, shot="mg:endcard", dur=9.0),
+    dict(id="endcard", section="end", vo=None, shot="candle_macro", shot_offset=46, dur=9.0),
 ]
 
 # Sections where the post-strike warm grade applies

@@ -26,6 +26,10 @@ KEY = os.environ["ELEVENLABS_API_KEY"]
 OUT = pathlib.Path("assets/vo")
 OUT.mkdir(parents=True, exist_ok=True)
 VOICE_NAME = "joseff sweet"
+# Stock "George" — used only when the key can't list voices AND no explicit
+# ELEVENLABS_VOICE_ID is set. Re-run this script with the Joseff Sweet ID in
+# ELEVENLABS_VOICE_ID (and delete assets/vo/) to re-voice the episode.
+FALLBACK_ID = "JBFqnCBsd6RMkjVDRZzb"
 
 
 def req(url, data=None, retries=4):
@@ -45,7 +49,16 @@ def req(url, data=None, retries=4):
 
 
 def find_voice():
-    voices = json.loads(req(f"{API}/voices?show_legacy=true"))["voices"]
+    if os.environ.get("ELEVENLABS_VOICE_ID"):
+        return os.environ["ELEVENLABS_VOICE_ID"], "from ELEVENLABS_VOICE_ID"
+    try:
+        voices = json.loads(req(f"{API}/voices?show_legacy=true"))["voices"]
+    except RuntimeError as e:
+        if "missing_permissions" not in str(e):
+            raise
+        print("WARNING: key lacks voices_read and no ELEVENLABS_VOICE_ID set —"
+              " narrating with stock George, not Joseff Sweet.")
+        return FALLBACK_ID, "George (stock fallback)"
     for v in voices:
         if v["name"].strip().lower() == VOICE_NAME:
             return v["voice_id"], v["name"]
