@@ -147,7 +147,7 @@ def main(out_path):
     uy = H * 0.545 + 4 * np.sin(ux * 0.018) + np.cumsum(rng.standard_normal(len(ux)) * 0.35)
 
     writer = imageio_ffmpeg.write_frames(
-        out_path, (W, H), fps=FPS, codec="libx264",
+        out_path, (W, H), fps=FPS, codec="libx264", macro_block_size=8,
         output_params=["-crf", "19", "-preset", "medium", "-pix_fmt", "yuv420p"],
     )
     writer.send(None)
