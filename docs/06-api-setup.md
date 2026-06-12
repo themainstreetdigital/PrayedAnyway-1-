@@ -7,11 +7,14 @@ stock footage (Pexels). All settings live in the Claude Code **environment**
 ## ElevenLabs (voiceover)
 
 1. elevenlabs.io → profile icon → **API Keys** → Create API Key → copy it.
-2. Pick the channel narrator in **Voices** (warm, low, intimate, slightly slow).
-   Note the voice name/ID — one voice, forever; it's the face of the channel.
+2. **Channel narrator voice (decided): "Joseff Sweet."** One voice, forever — it's
+   the face of the channel. It must be added to **My Voices** in the ElevenLabs
+   Voice Library so the API can use it. Production sessions: list voices via
+   `GET /v1/voices`, match the name "Joseff Sweet" (case-insensitive), and use its
+   voice ID. Suggested TTS settings to start: model `eleven_multilingual_v2`,
+   stability ~0.55, similarity ~0.75, style ~0.2, speed slightly slow.
 3. Claude Code environment settings → **Environment variables / Secrets**:
    - `ELEVENLABS_API_KEY` = your key
-   - `ELEVENLABS_VOICE` = voice name or ID (optional; agent will ask otherwise)
 4. Environment **network policy** → allow domain: `api.elevenlabs.io`
 
 ## Pexels (stock footage, free)
