@@ -122,6 +122,13 @@ VIGNETTE = np.clip(1.12 - 0.5 * _r ** 2, 0.38, 1.0)[..., None]
 GRNG = np.random.default_rng(99)
 
 
+def grain():
+    """Half-res film grain upscaled 2x: looks the same on dark footage but
+    costs the encoder ~4x less entropy than per-pixel noise."""
+    g = GRNG.standard_normal((H // 2, W // 2)).astype(np.float32)
+    return np.repeat(np.repeat(g, 2, 0), 2, 1)[..., None]
+
+
 def grade(buf, warm=0.0, t=0.0):
     """Channel look: desaturate, crush blacks, optional warmth, vignette, grain."""
     luma = (buf @ np.array([0.299, 0.587, 0.114], np.float32))[..., None]
@@ -132,7 +139,7 @@ def grade(buf, warm=0.0, t=0.0):
         buf *= np.array([1 + 0.06 * warm, 1 + 0.015 * warm, 1 - 0.045 * warm],
                         np.float32)[None, None, :]
     buf *= VIGNETTE
-    buf += GRNG.standard_normal((H, W, 1)).astype(np.float32) * 5.0
+    buf += grain() * 4.0
     np.clip(buf, 0, 255, out=buf)
 
 
@@ -450,13 +457,13 @@ def render_beat(beat, writer, strike_flash):
             grade(buf, warm=warm, t=t)
         else:
             buf *= VIGNETTE
-            buf += GRNG.standard_normal((H, W, 1)).astype(np.float32) * 4.0
+            buf += grain() * 3.2
             np.clip(buf, 0, 255, out=buf)
         if strike_flash:
             if t < 0.5:
-                add_glow(buf, flash, W * 0.5, H * 0.55, 1.7 * (1 - t / 0.5) ** 2)
+                add_glow(buf, flash, W * 0.5, H * 0.55, 1.4 * (1 - t / 0.5) ** 2)
             add_glow(buf, bloom, W * 0.5, H * 0.6,
-                     0.25 * min(1.0, t / 2.0))
+                     0.10 * min(1.0, t / 2.0))
             np.clip(buf, 0, 255, out=buf)
         if ov:
             a = env(t, ow[0], ow[1], fin=0.7, fout=0.6)
@@ -490,7 +497,7 @@ def mark_seams(rows):
 def open_writer(path):
     w = imageio_ffmpeg.write_frames(
         path, (W, H), fps=FPS, codec="libx264", macro_block_size=8,
-        output_params=["-crf", "19", "-preset", "medium", "-pix_fmt", "yuv420p"])
+        output_params=["-crf", "22", "-preset", "medium", "-pix_fmt", "yuv420p"])
     w.send(None)
     return w
 
