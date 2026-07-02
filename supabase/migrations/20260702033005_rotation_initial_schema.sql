@@ -198,6 +198,7 @@ alter table public.date_options       enable row level security;
 alter table public.votes              enable row level security;
 alter table public.role_assignments   enable row level security;
 alter table public.consents           enable row level security;
+alter table public.message_templates  enable row level security;
 alter table public.scheduled_messages enable row level security;
 alter table public.delivery_logs      enable row level security;
 
@@ -212,7 +213,7 @@ create policy "own profile - insert" on public.users
 -- Helper: is the current user a member of a given club?
 create or replace function public.is_club_member(target_club uuid)
 returns boolean
-language sql security definer stable as $$
+language sql security definer stable set search_path = '' as $$
   select exists (
     select 1 from public.memberships m
     where m.club_id = target_club and m.user_id = auth.uid()
@@ -222,7 +223,7 @@ $$;
 -- Helper: is the current user an organizer of a given club?
 create or replace function public.is_club_organizer(target_club uuid)
 returns boolean
-language sql security definer stable as $$
+language sql security definer stable set search_path = '' as $$
   select exists (
     select 1 from public.memberships m
     where m.club_id = target_club
@@ -242,6 +243,18 @@ create policy "club - create"         on public.clubs
 -- Memberships: members of a club can see its roster.
 create policy "membership - read" on public.memberships
   for select using (public.is_club_member(club_id));
+-- Bootstrap: the club's creator can add THEMSELVES to their own club
+-- (this is what lets the "create club -> become organizer" flow work, since
+-- clubs insert is allowed but membership insert would otherwise be blocked).
+-- Inviting OTHER members is still a deferred, organizer-scoped write path.
+create policy "membership - creator self-join" on public.memberships
+  for insert with check (
+    user_id = auth.uid()
+    and exists (
+      select 1 from public.clubs c
+      where c.id = club_id and c.created_by = auth.uid()
+    )
+  );
 
 -- Sessions and their children: readable by club members.
 create policy "session - read" on public.sessions
@@ -271,6 +284,13 @@ create policy "votes - change own" on public.votes
 create policy "consent - own" on public.consents
   for all using (member_id = auth.uid()) with check (member_id = auth.uid());
 
+-- Message templates: system-provided reference data, readable by any signed-in
+-- user. Writes are intentionally left to the service role / seed migrations.
+create policy "message_templates - read" on public.message_templates
+  for select to authenticated using (true);
+
 -- NOTE: role_slots, scheduled_messages, delivery_logs, and the write paths
--- for sessions/date_options/role_assignments should get organizer-scoped
--- policies as you build each feature. Start restrictive; open per-action.
+-- for sessions/date_options/role_assignments still need organizer-scoped
+-- policies before real users. So does the rest of the memberships write path
+-- (inviting/removing members, changing roles) beyond the creator bootstrap
+-- above. Start restrictive; open per-action.
